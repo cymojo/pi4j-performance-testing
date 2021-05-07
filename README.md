@@ -1,5 +1,5 @@
 
- Pi4J V2 :: Java I/O Library for Raspberry Pi :: Example game application with FXGL
+ Pi4J V2 :: Java I/O Library for Raspberry Pi :: Performance testing
 ===================================================================================
 
 [![Build Status](https://github.com/pi4j/pi4j-example-fxgl/workflows/Maven/badge.svg)](https://github.com/Pi4J/pi4j-example-fxgl/actions/workflows/maven.yml)
@@ -18,9 +18,6 @@ The full description is available on
 
 ## COMPONENTS
 
-![Arcade kit components](assets/arcade_parts_kit.jpg)
-![Picade Hat](assets/picade_hat.jpg)
-![Picade Hat picadeControl numbers](assets/picade_hat_pin_numbers.png)
 
 ## RUNTIME DEPENDENCIES
 
