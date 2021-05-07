@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.pi4j</groupId>
-    <artifactId>pi4j-example-fxgl</artifactId>
-    <name>Pi4J :: FXGL EXAMPLE :: Sample project with JavaFX and FXGL</name>
-    <description>Pi4J Sample Code</description>
+    <artifactId>pi4j-performance-testing</artifactId>
+    <name>Pi4J :: FXGL Performance test</name>
+    <description>Pi4J Performance Test</description>
     <version>0.0.1</version>
 
     <!-- BUILD PROPERTIES -->

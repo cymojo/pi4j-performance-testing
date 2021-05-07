@@ -11,5 +11,5 @@ java \
   -Dmonocle.platform=EGL \
   --module-path .:/opt/javafx-sdk-17/lib \
   --add-modules javafx.controls \
-  --module com.pi4j.example/com.pi4j.example.FxglExample $@
+  --module com.pi4j.example/com.pi4j.example.PreformanceTest $@
 /sbin/init 5
