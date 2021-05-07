@@ -83,5 +83,20 @@ public class Factory implements EntityFactory {
                 .with(new PhysicsComponent())
                 .build();
     }
+
+    @Spawns("item")
+    public Entity newItem(SpawnData data) {
+        Circle circle = new Circle(20, 20, 20, Color.RED);
+        circle.setStroke(Color.BROWN);
+        circle.setStrokeWidth(2.0);
+
+        return entityBuilder()
+                .from(data)
+                .type(EntityType.ITEM)
+                .viewWithBBox(circle)
+                .collidable()
+                .with(new RandomMoveComponent(new Rectangle2D(0, 0, getAppWidth(), getAppHeight()), 75))
+                .build();
+    }
 }
 

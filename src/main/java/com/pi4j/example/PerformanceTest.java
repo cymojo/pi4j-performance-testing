@@ -1,103 +1,58 @@
 package com.pi4j.example;
 
+import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGL.spawn;
+
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.pi4j.example.piMapping.PicadeGameApplication;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
-
-///**
-// * <p>This example fully describes the base usage of Pi4J to create a game</p>
-// */
-//public class PerformanceTest extends PicadeGameApplication {
-//
-//    private final Factory factory = new Factory();
-//
-//    public enum EntityType {
-//        BALL
-//    }
-//
-//    private Entity player;
-//
-//    /**
-//     * Main entry point where the application starts.
-//     *
-//     * @param args Start-up arguments
-//     */
-//    public static void main(String[] args) {
-//        // Launch the FXGL game application
-//        launch(args);
-//    }
-//
-//    /**
-//     * General game settings. For now only the title is set, but a longer list of options is available.
-//     *
-//     * @param settings The settings of the game which can be further extended here.
-//     */
-//    @Override
-//    protected void initSettings(GameSettings settings) {
-//        settings.setWidth(800);
-//        settings.setHeight(600);
-//        settings.setTitle("FXGL Performance Test");
-//
-////        settings.setProfilingEnabled(true);
-//    }
-//
-//
-//
-//    /**
-//     * Input configuration, here you configure all the input events like key presses, mouse clicks, etc.
-//     */
-//    @Override
-//    protected void initInput() {
-//
-//    }
-//
-//    /**
-//     * Initialization of the game by providing the {@link EntityFactory}.
-//     */
-//    @Override
-//    protected void initGame() {
-//        getGameWorld().addEntityFactory(factory);
-//
-//        spawn("ball");
-//    }
-//
-//    @Override
-//    protected void initPhysics() {
-//        getPhysicsWorld().setGravity(0, 9.81);
-//
-//        getConsole().println("Init physics done");
-//    }
-//}
-
-
 /**
  * Main class of the application
  */
-public class PerformanceTest extends GameApplication {
+public class PerformanceTest extends PicadeGameApplication {
 
-    private int amtOfBalls = 0;
+    private int frames = 0;
+    private long lastNow = -1L;
 
+    private static int numberOfItems = 50;
 
+    /**
+     * Types of objects we are going to use in this application.
+     */
     public enum EntityType {
+        ITEM,
         BALL
     }
 
+    /**
+     * Reference to the factory which will defines how all the types must be created.
+     */
     private final Factory factory = new Factory();
 
+    /**
+     * Player object we are going to use to provide to the factory so it can start a bullet from the player center.
+     */
+    private Entity player;
 
+    /**
+     * Main entry point where the application starts.
+     *
+     * @param args Start-up arguments
+     */
     public static void main(String[] args) {
+        if (args != null && args.length > 0) {
+            try {
+                numberOfItems = Integer.valueOf(args[0]);
+            } catch (Exception ex) {
+                System.err.println("Incorrect argument given: " + ex.getMessage());
+            }
+        }
         launch(args);
     }
 
@@ -108,24 +63,104 @@ public class PerformanceTest extends GameApplication {
      */
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setTitle("Performance Test");
-        settings.setWidth(800);
-        settings.setHeight(600);
+        settings.setTitle("JavaFX performance test - " + numberOfItems + " items - ");
         settings.setProfilingEnabled(true);
     }
 
+    /**
+     * Initialization of the game by providing the {@link EntityFactory}.
+     */
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(this.factory);
-        getGameWorld().addEntity(factory.makeScreenBounds(10));
+
+        for (int i = 0; i < numberOfItems; i++) {
+            spawn("item");
+        }
     }
 
     @Override
-    protected void initInput() {
-        onKey(KeyCode.F, () -> {
-            spawn("ball");
-            amtOfBalls++;
-            System.out.println(amtOfBalls);
+    protected void onUpdate(double tpf) {
+        if (this.lastNow == -1L) {
+            this.lastNow = System.nanoTime();
+            return;
+        }
+
+        this.frames++;
+
+        var now = System.nanoTime();
+        if (now - this.lastNow >= 3_000_000_000L) {
+            System.out.println(new SimpleDateFormat("HH:mm:ss.sss").format(new Date())
+                    + " FPS: " + this.frames / 3.0);
+            this.lastNow = now;
+            this.frames = 0;
+        }
+    }
+
+    /**
+     * Initialization of the physics to detect e.g. collisions.
+     */
+    @Override
+    protected void initPhysics() {
+        /*onCollisionBegin(EntityType.BULLET, EntityType.ENEMY, (bullet, enemy) -> {
+            bullet.removeFromWorld();
+            enemy.removeFromWorld();
         });
+
+        onCollisionBegin(EntityType.ENEMY, EntityType.PLAYER, (enemy, player) -> {
+            showMessage("You Died!", () -> {
+                getGameController().startNewGame();
+            });
+        });*/
     }
 }
+
+
+//
+///**
+// * Main class of the application
+// */
+//public class PerformanceTest extends GameApplication {
+//
+//    private int amtOfBalls = 0;
+//
+//
+//    public enum EntityType {
+//        BALL
+//    }
+//
+//    private final Factory factory = new Factory();
+//
+//
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
+//
+//    /**
+//     * General settings. For now only the title is set, but a longer list of options is available.
+//     *
+//     * @param settings The settings of the game which can be further extended here.
+//     */
+//    @Override
+//    protected void initSettings(GameSettings settings) {
+//        settings.setTitle("Performance Test");
+//        settings.setWidth(800);
+//        settings.setHeight(600);
+//        settings.setProfilingEnabled(true);
+//    }
+//
+//    @Override
+//    protected void initGame() {
+//        getGameWorld().addEntityFactory(this.factory);
+//        getGameWorld().addEntity(factory.makeScreenBounds(10));
+//    }
+//
+//    @Override
+//    protected void initInput() {
+//        onKey(KeyCode.F, () -> {
+//            spawn("ball");
+//            amtOfBalls++;
+//            System.out.println(amtOfBalls);
+//        });
+//    }
+//}
