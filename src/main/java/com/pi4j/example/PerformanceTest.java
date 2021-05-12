@@ -20,7 +20,7 @@ public class PerformanceTest extends PicadeGameApplication {
     private int frames = 0;
     private long lastNow = -1L;
 
-    private static int numberOfItems = 50;
+    private static int numberOfItems = 1000;
 
     /**
      * Types of objects we are going to use in this application.
@@ -64,6 +64,8 @@ public class PerformanceTest extends PicadeGameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setTitle("JavaFX performance test - " + numberOfItems + " items - ");
+        settings.setHeight(600);
+        settings.setWidth(900);
         settings.setProfilingEnabled(true);
     }
 

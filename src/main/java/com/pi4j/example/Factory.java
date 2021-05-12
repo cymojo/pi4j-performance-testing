@@ -29,28 +29,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-//
-//import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
-//
-///**
-// * The factory which defines how each entity looks like
-// */
-//public class Factory implements EntityFactory {
-//
-//    @Spawns("ball")
-//    public Entity newBall(SpawnData data) {
-//        Circle circle = new Circle(20, 20, 20, Color.BLUE);
-//
-//        return entityBuilder()
-//                .from(data)
-//                .type(PerformanceTest.EntityType.BALL)
-//                .viewWithBBox(circle)
-//                .collidable()
-////                .with(new RandomMoveComponent(new Rectangle2D(0, 0, getAppWidth(), getAppHeight()), 75))
-//                .build();
-//    }
-//}
-
 public class Factory implements EntityFactory {
 
     @Spawns("ball")
